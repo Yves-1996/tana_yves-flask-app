@@ -1,0 +1,30 @@
+pipeline{
+	agent any
+	
+	environment {
+		DOCKER_IMAGE = "yves1996/tana_yves-flask-app"
+	}
+	
+	stages {
+		stage('Clonage du repo'){
+			steps{
+				git 'https://github.com/Yves-1996/tana_yves-flask-app.git'
+			}
+		}
+		
+		stage('Construction de l'image Docker'){
+			steps {
+				script {
+					sh 'docker built -t yves1996/tana_yves-flask-app .'
+				}
+			}
+		}
+		stage('Publication') {
+			steps {
+				script {
+					sh "echo 'oskar01012019' | docker login -u 'yves1996' --password-stdin"
+				}
+			}
+		}
+	}
+}
